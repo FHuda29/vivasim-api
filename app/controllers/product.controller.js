@@ -11,13 +11,13 @@ exports.create = (req, res) => {
 
   // Create a Product
   const product = new Product({
-    ProductID: req.body.ProductID,
-    ProductName: req.body.ProductName,
-    Country: req.body.Country,
-    Days: req.body.Days,
-    Quota: req.body.Quota,
-    SellingPrice: req.body.SellingPrice,
-    Status: req.body.Status
+    package_id: req.body.package_id,
+    package_name: req.body.package_name,
+    country: req.body.country,
+    days: req.body.days,
+    quota: req.body.quota,
+    selling_price: req.body.selling_price,
+    status: req.body.status
   });
 
   // Save Product in the database
@@ -45,13 +45,27 @@ exports.findAll = (req, res) => {
   });
 };
 
+exports.searchAll = (req, res) => {
+    const param = req.query.param;
+  
+    Product.searchAll(param, (err, data) => {
+      if (err)
+        res.status(500).send({
+          success: false,
+          message:
+            err.message || "Some error occurred while retrieving products."
+        });
+      else res.send(data);
+    });
+};
+
 // Find a single Product by Seq
 exports.findOne = (req, res) => {
     Product.findById(req.params.seq, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Not found Product with id ${req.params.seq}.`
+          message: `Not found Product with seq ${req.params.seq}.`
         });
       } else {
         res.status(500).send({
@@ -92,11 +106,11 @@ exports.update = (req, res) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
-            message: `Not found Product with id ${req.params.seq}.`
+            message: `Not found Product with seq ${req.params.seq}.`
           });
         } else {
           res.status(500).send({
-            message: "Error updating Product with id " + req.params.seq
+            message: "Error updating Product with seq " + req.params.seq
           });
         }
       } else res.send(data);
@@ -110,7 +124,7 @@ exports.delete = (req, res) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Not found Product with id ${req.params.seq}.`
+          message: `Not found Product with seq ${req.params.seq}.`
         });
       } else {
         res.status(500).send({

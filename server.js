@@ -23,6 +23,7 @@ app.get("/", (req, res) => {
 
 // routes
 require("./app/routes/product.route.js")(app);
+require("./app/routes/productpartner.route.js")(app);
 require("./app/routes/user.route.js")(app);
 require("./app/routes/partner.route.js")(app);
 require("./app/routes/agent.route.js")(app);

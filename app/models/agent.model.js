@@ -2,42 +2,47 @@ const sql = require("./db.js");
 
 // constructor
 const Agent = function(agent) {
-  this.AgentCode = agent.AgentCode;
-  this.AgentID = agent.AgentID;
-  this.IDType = agent.IDType;
-  this.Name = agent.Name;
-  this.Address = agent.Address;
-  this.OfficePhone = agent.OfficePhone;
-  this.ContactPerson = agent.ContactPerson;
-  this.ContactPhone = agent.ContactPhone;
-  this.Email = agent.Email;
-  this.AccountManager = agent.AccountManager;
-  this.ContractNumber = agent.ContractNumber;
-  this.PaymentNote = agent.PaymentNote;
-  this.BankName = agent.BankName;
-  this.BankAccNo = agent.BankAccNo;
-  this.BankAccName = agent.BankAccName;
-  this.Commission = agent.Commission;
-  this.JoinDate = agent.JoinDate;
-  this.Status = agent.Status;
-  this.Note = agent.Note;
+  this.agent_code = agent.agent_code;
+  this.agent_id = agent.agent_id;
+  this.id_type = agent.id_type;
+  this.name = agent.name;
+  this.address = agent.address;
+  this.kelurahan = agent.kelurahan;
+  this.kecamatan = agent.kecamatan;
+  this.city = agent.city;
+  this.province = agent.province;
+  this.office_phone = agent.office_phone;
+  this.contact_person = agent.contact_person;
+  this.contact_phone = agent.contact_phone;
+  this.email = agent.email;
+  this.commission_pct = agent.commission_pct;
+  this.join_date = agent.join_date;
+  this.status = agent.status;
+  this.note = agent.note;
+  this.account_manager = agent.account_manager;
+  this.contract_no = agent.contract_no;
+  this.payment_note = agent.payment_note;
+  this.bank_name = agent.bank_name;
+  this.bank_acc_no = agent.bank_acc_no;
+  this.bank_acc_name = agent.bank_acc_name;
+  this.cobrand_id = agent.cobrand_id;
 };
 
 Agent.create = (newAgent, result) => {
-  sql.query("INSERT INTO tb_agent SET ?", newAgent, (err, res) => {
+  sql.query("INSERT INTO agent SET ?", newAgent, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
       return;
     }
 
-    console.log("created agents: ", { Seq: res.Seq, ...newAgent });
-    result(null, { Seq: res.Seq, ...newAgent });
+    console.log("created agents: ", { seq: res.seq, ...newAgent });
+    result(null, { seq: res.seq, ...newAgent });
   });
 };
 
 Agent.findById = (seq, result) => {
-  sql.query(`SELECT * FROM tb_agent WHERE Seq = ${seq}`, (err, res) => {
+  sql.query(`SELECT * FROM agent WHERE seq = ${seq}`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -56,10 +61,10 @@ Agent.findById = (seq, result) => {
 };
 
 Agent.getAll = (name, result) => {
-  let query = "SELECT * FROM tb_agent";
+  let query = "SELECT * FROM agent";
 
   if (name) {
-    query += ` WHERE Name LIKE '%${name}%'`;
+    query += ` WHERE name LIKE '%${name}%'`;
   }
 
   sql.query(query, (err, res) => {
@@ -77,8 +82,8 @@ Agent.getAll = (name, result) => {
 
 Agent.updateById = (seq, agent, result) => {
   sql.query(
-    "UPDATE tb_agent SET AgentCode = ?, AgentID = ?, IDType = ?, Name = ?, Address = ?, OfficePhone  = ? , ContactPerson  = ?, Email  = ?, AccountManager  = ?, ContractNumber  = ?, PaymentNote  = ?, BankName  = ?, BankAccNo  = ?, BankAccName  = ?, Commission  = ?, JoinDate  = ?, Status  = ?, Note  = ? WHERE Seq = ?",
-    [agent.AgentCode, agent.AgentID, agent.IDType, agent.Name, agent.Address, agent.OfficePhone, agent.ContactPerson, agent.Email, agent.AccountManager, agent.ContractNumber, agent.PaymentNote, agent.BankName, agent.BankAccNo, agent.BankAccName, agent.Commission, agent.JoinDate, agent.Status, agent.Note, seq],
+    "UPDATE agent SET agent_code = ?, agent_id = ?, id_type = ?, name = ?, address = ?, kelurahan  = ? , kecamatan  = ?, city  = ?, province  = ?, office_phone  = ?, contact_person  = ?, contact_phone  = ?, email  = ?, commission_pct  = ?, join_date  = ?, status  = ?, note  = ?, account_manager  = ?, contract_no  = ?, payment_note  = ?, bank_name  = ?, bank_acc_no  = ?, bank_acc_name  = ?, cobrand_id  = ? WHERE seq = ?",
+    [agent.agent_code, agent.agent_id, agent.id_type, agent.name, agent.address, agent.kelurahan, agent.kecamatan, agent.city, agent.province, agent.office_phone, agent.contact_person, agent.contact_phone, agent.email, agent.commission_pct, agent.join_date, agent.status, agent.note, agent.account_manager, agent.contract_no, agent.payment_note, agent.bank_name, agent.bank_acc_no, agent.bank_acc_name, agent.cobrand_id, seq],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -91,14 +96,14 @@ Agent.updateById = (seq, agent, result) => {
         return;
       }
 
-      console.log("updated agent: ", { Seq: seq, ...agent });
-      result(null, { Seq: seq, ...agent });
+      console.log("updated agent: ", { seq: seq, ...agent });
+      result(null, { seq: seq, ...agent });
     }
   );
 };
 
 Agent.remove = (seq, result) => {
-  sql.query("DELETE FROM tb_agent WHERE Seq = ?", seq, (err, res) => {
+  sql.query("DELETE FROM agent WHERE seq = ?", seq, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
@@ -116,7 +121,7 @@ Agent.remove = (seq, result) => {
 };
 
 Agent.removeAll = result => {
-  sql.query("DELETE FROM tb_agent", (err, res) => {
+  sql.query("DELETE FROM agent", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);

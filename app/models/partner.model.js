@@ -2,30 +2,31 @@ const sql = require("./db.js");
 
 // constructor
 const Partner = function(partner) {
-  this.PartnerID = partner.PartnerID;
-  this.PartnerName = partner.PartnerName;
-  this.PartnerPIC = partner.PartnerPIC;
-  this.PaymentType = partner.PaymentType;
-  this.TotalInvoice = partner.TotalInvoice;
-  this.BasePrice = partner.BasePrice;
-  this.TotalProfit = partner.TotalProfit;
+  this.master_id = partner.master_id;
+  this.cobrand_id = partner.cobrand_id;
+  this.cobrand_name = partner.cobrand_name;
+  this.pic = partner.pic;
+  this.deposit = partner.deposit;
+  this.ar = partner.ar;
+  //this.sms_internal_reply = partner.sms_internal_reply;
+  this.payment_type = partner.payment_type;
 };
 
 Partner.create = (newPartner, result) => {
-  sql.query("INSERT INTO tb_partner SET ?", newPartner, (err, res) => {
+  sql.query("INSERT INTO cobrand SET ?", newPartner, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
       return;
     }
 
-    console.log("created partner: ", { partnerSeq: res.partnerSeq, ...newPartner });
-    result(null, { partnerSeq: res.partnerSeq, ...newPartner });
+    console.log("created partner: ", { seq: res.seq, ...newPartner });
+    result(null, { seq: res.seq, ...newPartner });
   });
 };
 
 Partner.findById = (seq, result) => {
-  sql.query(`SELECT * FROM tb_partner WHERE partnerSeq = ${seq}`, (err, res) => {
+  sql.query(`SELECT * FROM cobrand WHERE seq = ${seq}`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -43,11 +44,11 @@ Partner.findById = (seq, result) => {
   });
 };
 
-Partner.getAll = (PartnerName, result) => {
-  let query = "SELECT * FROM tb_partner";
+Partner.getAll = (name, result) => {
+  let query = "SELECT * FROM cobrand";
 
-  if (PartnerName) {
-    query += ` WHERE PartnerName LIKE '%${PartnerName}%'`;
+  if (name) {
+    query += ` WHERE cobrand_name LIKE '%${name}%'`;
   }
 
   sql.query(query, (err, res) => {
@@ -63,10 +64,10 @@ Partner.getAll = (PartnerName, result) => {
 };
 
 
-Partner.updateById = (partnerSeq, partners, result) => {
+Partner.updateById = (seq, partners, result) => {
   sql.query(
-    "UPDATE tb_partner SET PartnerID = ?, PartnerName = ?, PartnerPIC = ?, PaymentType = ?, TotalInvoice = ?, BasePrice  = ? , TotalProfit  = ? WHERE partnerSeq = ?",
-    [partners.PartnerID, partners.PartnerName, partners.PartnerPIC, partners.PaymentType, partners.TotalInvoice, partners.BasePrice, partners.TotalProfit, partnerSeq],
+    "UPDATE cobrand SET master_id = ?, cobrand_id = ?, cobrand_name = ?, pic = ?, deposit = ?, ar  = ? , sms_internal_reply  = ?, payment_type = ? WHERE seq = ?",
+    [partners.master_id, partners.cobrand_id, partners.cobrand_name, partners.pic, partners.deposit, partners.ar, partners.sms_internal_reply, partners.payment_type, seq],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -79,14 +80,14 @@ Partner.updateById = (partnerSeq, partners, result) => {
         return;
       }
 
-      console.log("updated partner: ", { partnerSeq: partnerSeq, ...partners });
-      result(null, { partnerSeq: partnerSeq, ...partners });
+      console.log("updated partner: ", { seq: seq, ...partners });
+      result(null, { seq: seq, ...partners });
     }
   );
 };
 
-Partner.remove = (partnerSeq, result) => {
-  sql.query("DELETE FROM tb_partner WHERE partnerSeq = ?", partnerSeq, (err, res) => {
+Partner.remove = (seq, result) => {
+  sql.query("DELETE FROM cobrand WHERE seq = ?", seq, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
@@ -98,13 +99,13 @@ Partner.remove = (partnerSeq, result) => {
       return;
     }
 
-    console.log("deleted partner with seq: ", partnerSeq);
+    console.log("deleted partner with seq: ", seq);
     result(null, res);
   });
 };
 
 Partner.removeAll = result => {
-  sql.query("DELETE FROM tb_partner", (err, res) => {
+  sql.query("DELETE FROM cobrand", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);

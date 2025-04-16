@@ -1,5 +1,5 @@
 module.exports = app => {
-    const products = require("../controllers/product.controller.js");
+    const products = require("../controllers/productpartner.controller.js");
   
     var router = require("express").Router();
   
@@ -11,7 +11,7 @@ module.exports = app => {
 
     // Search all Product
     router.get("/search", products.searchAll);
-  
+
     // Retrieve all status Product
     router.get("/status", products.findAllPublished);
   
@@ -20,13 +20,16 @@ module.exports = app => {
   
     // Update a Product with id
     router.put("/:seq", products.update);
-  
+    
+    // Update a salling price Product with id
+    router.put("/salling/:seq", products.updateSallingPrice);
+
     // Delete a Product with id
-    router.delete("/:seq", products.delete);
+    router.delete("/delete/:seq", products.delete);
   
     // Delete all Product
     router.delete("/", products.deleteAll);
   
-    app.use('/api/products', router);
+    app.use('/api/product/partner', router);
   };
   

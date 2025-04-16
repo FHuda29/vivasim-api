@@ -11,13 +11,13 @@ exports.create = (req, res) => {
 
   // Create a Partner
   const partner = new Partner({
-    PartnerID: req.body.PartnerID,
-    PartnerName: req.body.PartnerName,
-    PartnerPIC: req.body.PartnerPIC,
-    PaymentType: req.body.PaymentType,
-    TotalInvoice: req.body.TotalInvoice,
-    BasePrice: req.body.BasePrice,
-    TotalProfit: req.body.TotalProfit
+    master_id: req.body.master_id,
+    cobrand_id: req.body.cobrand_id,
+    cobrand_name: req.body.cobrand_name,
+    pic: req.body.pic,
+    deposit: req.body.deposit,
+    ar: req.body.ar,
+    payment_type: req.body.payment_type
   });
 
   // Save Partner in the database
@@ -51,11 +51,11 @@ exports.findOne = (req, res) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Not found User with id ${req.params.seq}.`
+          message: `Not found Partner with id ${req.params.seq}.`
         });
       } else {
         res.status(500).send({
-          message: "Error retrieving Product with seq " + req.params.seq
+          message: "Error retrieving Partner with seq " + req.params.seq
         });
       }
     } else res.send(data);
