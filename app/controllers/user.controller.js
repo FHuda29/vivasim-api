@@ -57,6 +57,20 @@ exports.login = (req, res) => {
 });
 };
 
+exports.searchAll = (req, res) => {
+    const param = req.query.param;
+  
+    Users.searchAll(param, (err, data) => {
+      if (err)
+        res.status(500).send({
+          success: false,
+          message:
+            err.message || "Some error occurred while retrieving users."
+        });
+      else res.send(data);
+    });
+};
+
 // Retrieve all Users from the database (with condition).
 exports.findAll = (req, res) => {
   const userName = req.query.userName;
@@ -82,6 +96,22 @@ exports.findOne = (req, res) => {
       } else {
         res.status(500).send({
           message: "Error retrieving Product with seq " + req.params.seq
+        });
+      }
+    } else res.send(data);
+  });
+};
+
+exports.findByCobrand = (req, res) => {
+  Users.findByCobraind(req.params.cobrand_id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found User with cobrain_id ${req.params.cobrand_id}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving Product with cobrain_id " + req.params.cobrand_id
         });
       }
     } else res.send(data);
@@ -129,7 +159,58 @@ exports.update = (req, res) => {
   );
 };
 
-// Delete a Product with the specified id in the request
+exports.resetPwdUser = (req, res) => {
+  // Validate Request
+  if (!req.body.password) {
+    res.status(400).send({
+      success: false,
+      message: "Password can not be empty!"
+    });
+  }
+
+  console.log(req.body.password);
+
+  Users.resetPassword(
+    req.params.seq,req.body.password,
+    (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            success: false,
+            message: `Not found User with seq ${req.params.seq}.`
+          });
+        } else {
+          res.status(500).send({
+            success: false,
+            message: "Error reset password User with seq " + req.params.seq
+          });
+        }
+      } else res.send({success: true, message: "Password reset successfully!"});
+    }
+  );
+};
+
+exports.blockandunblock = (req, res) => {
+  const bodyData = {
+    blocked: req.body.blocked
+  }
+
+  Users.blockandunblock(req.params.seq,bodyData, (err, data) => {
+  if (err) {
+    if (err.kind === "not_found") {
+      res.status(404).send({
+        message: `Not found User with seq ${req.params.seq}.`
+      });
+    } else {
+      res.status(500).send({
+        message: "Could not block or unblock User with seq " + req.params.seq
+      });
+    }
+  } else res.send({ message: `User was block/unblock successfully!` });
+});
+};
+
+// Delete a User with the specified id in the request
 exports.delete = (req, res) => {
     Users.remove(req.params.seq, (err, data) => {
     if (err) {

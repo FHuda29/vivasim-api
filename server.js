@@ -4,8 +4,10 @@ const cors = require("cors");
 
 const app = express();
 
+
 var corsOptions = {
   origin: "http://localhost:5173"
+  //origin: "http://147.139.174.253"
 };
 
 app.use(cors(corsOptions));
@@ -27,6 +29,12 @@ require("./app/routes/productpartner.route.js")(app);
 require("./app/routes/user.route.js")(app);
 require("./app/routes/partner.route.js")(app);
 require("./app/routes/agent.route.js")(app);
+require("./app/routes/inventory.route.js")(app);
+require("./app/routes/level.route.js")(app);
+require("./app/routes/country.route.js")(app);
+require("./app/routes/order.route.js")(app);
+require("./app/routes/orderevent.route.js")(app);
+require("./app/routes/dashboard.route.js")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

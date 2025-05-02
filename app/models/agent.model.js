@@ -2,7 +2,7 @@ const sql = require("./db.js");
 
 // constructor
 const Agent = function(agent) {
-  this.agent_code = agent.agent_code;
+  this.agent_code = agent.cobrand_id + "-" +agent.agent_code;
   this.agent_id = agent.agent_id;
   this.id_type = agent.id_type;
   this.name = agent.name;
@@ -52,6 +52,44 @@ Agent.findById = (seq, result) => {
     if (res.length) {
       console.log("found agents: ", res[0]);
       result(null, res[0]);
+      return;
+    }
+
+    // not found product with the seq
+    result({ kind: "not_found" }, null);
+  });
+};
+
+Agent.findByConbrand = (cobrand_id, result) => {
+  sql.query(`SELECT * FROM agent WHERE cobrand_id = '${cobrand_id}'`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (res.length) {
+      console.log("found agents: ", res);
+      result(null, res);
+      return;
+    }
+
+    // not found product with the seq
+    result({ kind: "not_found" }, null);
+  });
+};
+
+Agent.findByAgenCode = (agentCode, result) => {
+  sql.query(`SELECT * FROM agent WHERE agent_code = '${agentCode}'`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (res.length) {
+      console.log("found agents: ", res);
+      result(null, res);
       return;
     }
 

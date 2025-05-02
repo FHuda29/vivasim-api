@@ -17,7 +17,12 @@ module.exports = app => {
   
     // Retrieve a single Product with id
     router.get("/:seq", products.findOne);
-  
+
+    // Retrieve a single Product with cobrand id
+    router.get("/cobrand/:cobrand_id", products.findByCobrand);
+
+    router.get("/:country_code/:days/:quota", products.findByDetailProduct);
+
     // Update a Product with id
     router.put("/:seq", products.update);
     

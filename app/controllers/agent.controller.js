@@ -79,6 +79,38 @@ exports.findOne = (req, res) => {
   });
 };
 
+exports.findCobrand = (req, res) => {
+  Agent.findByConbrand(req.params.cobrand_id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found Agents with id ${req.params.cobrand_id}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving Agents with seq " + req.params.cobrand_id
+        });
+      }
+    } else res.send(data);
+  });
+};
+
+exports.findByAgent = (req, res) => {
+  Agent.findByAgenCode(req.params.agent_code, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found Agents with id ${req.params.agent_code}.`
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving Agents with seq " + req.params.agent_code
+        });
+      }
+    } else res.send(data);
+  });
+};
+
 
 // Update a Agents identified by the id in the request
 exports.update = (req, res) => {

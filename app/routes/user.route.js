@@ -3,28 +3,39 @@ module.exports = app => {
   
     var router = require("express").Router();
   
-    // Create a new Product
+    // Create a new Users
     router.post("/", users.create);
 
     //login
     router.post("/login", users.login);
 
-    // Retrieve all Product
+    // Search all users
+    router.get("/search", users.searchAll);
+
+    // Retrieve all Users
     router.get("/", users.findAll);
-  
-    // Retrieve all status Product
+
+    // Retrieve all status Users
     router.get("/status", users.findAllBlocked);
   
-    // Retrieve a single Product with id
+    // Retrieve a single Users with id
     router.get("/:seq", users.findOne);
-  
-    // Update a Product with id
+
+    router.get("/cobrand/:cobrand_id", users.findByCobrand);
+
+    // Update a Users with id
     router.put("/:seq", users.update);
-  
-    // Delete a Product with id
+
+    // Reset password a Users with id
+    router.put("/reset/:seq", users.resetPwdUser);
+
+    // Block a Users with id
+    router.put("/block/:seq", users.blockandunblock);
+
+    // Delete a Users with id
     router.delete("/:seq", users.delete);
   
-    // Delete all Product
+    // Delete all Users
     router.delete("/", users.deleteAll);
   
     app.use('/api/users', router);

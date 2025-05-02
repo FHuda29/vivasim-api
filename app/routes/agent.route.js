@@ -12,6 +12,11 @@ module.exports = app => {
     // Retrieve a single Agent with id
     router.get("/:seq", agents.findOne);
   
+    // Retrive a single Agent with cobrand id
+    router.get("/cobrand/:cobrand_id", agents.findCobrand);
+
+    router.get("/code/:agent_code", agents.findByAgent);
+
     // Update a Agent with id
     router.put("/:seq", agents.update);
   

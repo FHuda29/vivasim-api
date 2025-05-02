@@ -81,6 +81,43 @@ exports.findOne = (req, res) => {
   });
 };
 
+exports.findByCobrand = (req, res) => {
+  ProductPartner.findByCobrand(req.params.cobrand_id, (err, data) => {
+  if (err) {
+    if (err.kind === "not_found") {
+      res.status(404).send({
+          success: false,
+          message: `Not found Product partner with seq ${req.params.cobrand_id}.`
+      });
+    } else {
+      res.status(500).send({
+          success: false,
+          message: "Error retrieving Product partner with seq " + req.params.cobrand_id
+      });
+    }
+  } else res.send(data);
+});
+};
+
+exports.findByDetailProduct = (req, res) => {
+  ProductPartner.findByProductDetail(req.params.country_code,req.params.days,req.params.quota, (err, data) => {
+  if (err) {
+    if (err.kind === "not_found") {
+      res.status(404).send({
+          success: false,
+          message: `Not found Product partner with seq ${req.params.country_code}.`
+      });
+    } else {
+      res.status(500).send({
+          success: false,
+          message: "Error retrieving Product partner with seq " + req.params.country_code
+      });
+    }
+  } else res.send(data);
+});
+};
+
+
 // find all published Product
 exports.findAllPublished = (req, res) => {
     ProductPartner.getAllStatus((err, data) => {

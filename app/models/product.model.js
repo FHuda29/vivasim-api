@@ -44,6 +44,26 @@ Product.findById = (seq, result) => {
   });
 };
 
+Product.findPackageId = (package_id, result) => {
+  sql.query(`SELECT * FROM country_sim_combination WHERE package_id = '${package_id}'`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (res.length) {
+      console.log("found product: ", res[0]);
+      result(null, res[0]);
+      return;
+    }
+
+    // not found product with the seq
+    result({ kind: "not_found" }, null);
+  });
+};
+
+
 Product.getAll = (productName, result) => {
   let query = "SELECT * FROM country_sim_combination";
 

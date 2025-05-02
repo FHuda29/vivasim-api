@@ -45,6 +45,45 @@ ProductPartner.findById = (seq, result) => {
   });
 };
 
+ProductPartner.findByCobrand = (cobrand_id, result) => {
+  sql.query(`SELECT * FROM country_sim_combination_partner WHERE cobrand_id = '${cobrand_id}'`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (res.length) {
+      console.log("found product partner: ", res);
+      result(null, res);
+      return;
+    }
+
+    // not found product with the seq
+    result({ kind: "not_found" }, null);
+  });
+};
+
+
+ProductPartner.findByProductDetail = (country_code,days,quota, result) => {
+  sql.query(`SELECT * FROM country_sim_combination_partner WHERE country = '${country_code}' AND days = ${days} AND quota = '${quota}'`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (res.length) {
+      console.log("found product partner: ", res);
+      result(null, res);
+      return;
+    }
+
+    // not found product with the seq
+    result({ kind: "not_found" }, null);
+  });
+};
+
 ProductPartner.searchAll = (param, result) => {
     let query = "SELECT * FROM country_sim_combination_partner";
 

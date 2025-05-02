@@ -76,6 +76,22 @@ exports.findOne = (req, res) => {
   });
 };
 
+exports.findByPackageId = (req, res) => {
+  Product.findPackageId(req.params.package_id, (err, data) => {
+  if (err) {
+    if (err.kind === "not_found") {
+      res.status(404).send({
+        message: `Not found Product with packageID ${req.params.package_id}.`
+      });
+    } else {
+      res.status(500).send({
+        message: "Error retrieving Product with packageID " + req.params.package_id
+      });
+    }
+  } else res.send(data);
+});
+};
+
 // find all published Product
 exports.findAllPublished = (req, res) => {
     Product.getAllStatus((err, data) => {

@@ -17,7 +17,10 @@ module.exports = app => {
   
     // Retrieve a single Product with id
     router.get("/:seq", products.findOne);
-  
+
+    // Retrieve a single Product with id
+    router.get("/package/:package_id", products.findByPackageId);
+
     // Update a Product with id
     router.put("/:seq", products.update);
   

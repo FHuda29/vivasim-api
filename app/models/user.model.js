@@ -61,6 +61,47 @@ Users.findById = (seq, result) => {
   });
 };
 
+Users.findByCobraind = (cobrand_id, result) => {
+  sql.query(`SELECT seq, user_name, session_name, session_level, blocked, failed, last_login_time FROM session WHERE session_name LIKE '%${cobrand_id}%'`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (res.length) {
+      console.log("found users: ", res);
+      result(null, res);
+      return;
+    }
+
+    // not found product with the seq
+    result({ kind: "not_found" }, null);
+  });
+};
+
+Users.searchAll = (param, result) => {
+  let query = "SELECT * FROM session";
+
+  if (param) {
+      query += ` WHERE user_name LIKE '%${param}%'`;
+      query += ` OR session_name LIKE '%${param}%'`;
+      query += ` OR session_level LIKE '%${param}%'`;
+      query += ` OR blocked LIKE '%${param}%'`;
+  }
+
+  sql.query(query, (err, res) => {
+      if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+      }
+
+      console.log("search users : ", res);
+      result(null, res);
+  });
+};
+
 Users.getAll = (userName, result) => {
   let query = "SELECT seq, user_name, session_name, session_level, blocked, failed, last_login_time FROM session";
 
@@ -113,6 +154,49 @@ Users.updateById = (seq, users, result) => {
       result(null, { seq: seq, ...users });
     }
   );
+};
+
+Users.resetPassword = (seq, password, result) => {
+  const pwd = md5(password);
+  sql.query(
+    "UPDATE session SET password = ?  WHERE seq = ?",
+    [pwd, seq],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+
+      if (res.affectedRows == 0) {
+        result({ kind: "not_found" }, null);
+        return;
+      }
+
+      console.log("reset password users: ", { seq: seq });
+      result(null, { seq: seq });
+    }
+  );
+};
+
+Users.blockandunblock = (seq, param,result) => {
+  console.log(param);
+  
+  sql.query("UPDATE session SET blocked = ?  WHERE seq = ?", [param.blocked, seq], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+
+    if (res.affectedRows == 0) {
+      result({ kind: "not_found" }, null);
+      return;
+    }
+
+    console.log("block and unblock user with seq: ", seq);
+    result(null, res);
+  });
 };
 
 Users.remove = (seq, result) => {
