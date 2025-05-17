@@ -121,7 +121,7 @@ Orders.getByOrderId = (order_id, result) => {
 };
 
 Orders.getAllStatus = (status, result) => {
-  sql.query(`SELECT * FROM orders WHERE status='${status}'`, (err, res) => {
+  sql.query(`SELECT * FROM orders WHERE order_sstatus='${status}'`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);

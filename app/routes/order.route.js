@@ -11,6 +11,8 @@ module.exports = app => {
 
     router.get("/agent/:agent_code", orders.findByAgent);
 
+    router.get("/status/:order_status", orders.getOrderByStatus);
+
     router.get("/id/:order_id", orders.findByOrderId);
 
     router.get("/update/:order_id/:order_status", orders.updateStatus);

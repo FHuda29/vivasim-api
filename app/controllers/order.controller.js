@@ -93,6 +93,23 @@ exports.findByOrderId = (req, res) => {
   });
 };
 
+exports.getOrderByStatus = (req, res) => {
+  Orders.getAllStatus(req.params.order_status, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+            success: false,
+            message: `Not found Orders with agent code ${req.params.order_status}.`
+        });
+      } else {
+        res.status(500).send({
+            success: false,
+            message: "Error retrieving Orders with agent code " + req.params.order_status
+        });
+      }
+    } else res.send(data);
+  });
+}
 exports.updateStatus = (req, res) => {
   Orders.updateStatus(req.params.order_id,req.params.order_status, (err, data) => {
     if (err) {
