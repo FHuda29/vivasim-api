@@ -198,10 +198,11 @@ Inventory.getRangeCCID = (ccidStart,ccidEnd,conbrandId,agentCode, result) => {
       query += ` WHERE iccid >= '${ccidStart}'`;
       query += ` AND iccid <= '${ccidEnd}'`;
       query += ` AND cobrand_id = '${conbrandId}'`;
+      query += ` AND agent_code = '${agentCode}'`;
   }else{
       query += ` WHERE iccid >= '${ccidStart}'`;
       query += ` AND iccid <= '${ccidEnd}'`;
-      query += ` AND cobrand_id = 'VVA'`;
+      //query += ` AND cobrand_id = '${conbrandId}'`;
   }
 
   sql.query(query, (err, res) => {
@@ -211,7 +212,7 @@ Inventory.getRangeCCID = (ccidStart,ccidEnd,conbrandId,agentCode, result) => {
         return;
       }
 
-      console.log("get list: ", res);
+      console.log("get list ccid: ", res);
       //result(null, res);
       
       for (let i = 0; i < res.length; i++) {

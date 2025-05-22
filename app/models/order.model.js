@@ -108,7 +108,7 @@ Orders.getByAgentCode = (agent_code, result) => {
 };
 
 Orders.getByOrderId = (order_id, result) => {
-  sql.query(`SELECT * FROM orders WHERE order_id='${order_id}'`, (err, res) => {
+  sql.query(`SELECT orders.*, country_sim_combination_partner.package_name FROM orders INNER JOIN country_sim_combination_partner ON orders.order_product = country_sim_combination_partner.package_id WHERE orders.order_id='${order_id}'`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
