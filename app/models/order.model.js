@@ -155,8 +155,7 @@ Orders.searchAll = (param, result) => {
 
 Orders.updateById = (seq, orders, result) => {
   sql.query(
-    "UPDATE orders SET order_id = ?, order_date = ?, order_type = ?, order_status = ?, order_customer_name = ?, order_contact_phone  = ?, order_contact_wa  = ?, order_contact_email = ?, order_agent_code = ?, order_agent_name = ?, order_product = ?, order_qty = ?, order_product_price = ?, order_product_total_price = ?  WHERE seq = ?",
-    [orders.order_id, orders.order_date, orders.order_type, orders.order_status, orders.order_customer_name, orders.order_contact_phone, orders.order_contact_wa, orders.order_contact_email, orders.order_agent_code, orders.order_agent_name, orders.order_product, orders.order_qty,  orders.order_product_price,  orders.order_product_total_price, seq],
+    "UPDATE orders SET order_id = ?, order_date = ?, order_type = ?, order_status = ?, order_customer_name = ?, order_contact_phone  = ?, order_contact_wa  = ?, order_contact_email = ?, order_agent_code = ?, order_agent_name = ?, order_product = ?, order_qty = ?, order_product_price = ?, order_product_total_price = ?, order_country_code = ?, order_fup = ?, order_quota = ?,order_days = ?, order_ccid = ?  WHERE seq = ?",[orders.order_id,orders.order_date,orders.order_type,orders.order_status,orders.order_customer_name,orders.order_contact_phone,orders.order_contact_wa,orders.order_contact_email,orders.order_agent_code,orders.order_agent_name,orders.order_product,orders.order_qty,orders.order_product_price,orders.order_product_total_price,orders.order_country_code,orders.order_fup,orders.order_quota,orders.order_days,orders.order_ccid, seq],
     (err, res) => {
       if (err) {
         console.log("error: ", err);

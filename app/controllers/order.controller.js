@@ -127,3 +127,23 @@ exports.updateStatus = (req, res) => {
     } else res.send(data);
   });
 };
+
+exports.updateById = (req, res) => {
+  Orders.updateById(
+    req.params.seq,
+    new Orders(req.body),
+    (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+          res.status(404).send({
+            message: `Not found Orders with seq ${req.params.seq}.`
+          });
+        } else {
+          res.status(500).send({
+            message: "Error updating Orders with seq " + req.params.seq
+          });
+        }
+      } else res.send(data);
+    }
+  );
+};

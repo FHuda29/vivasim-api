@@ -15,6 +15,8 @@ module.exports = app => {
 
     router.get("/id/:order_id", orders.findByOrderId);
 
+    router.put("/update/:seq", orders.updateById);
+
     router.get("/update/:order_id/:order_status", orders.updateStatus);
 
     app.use('/api/orders', router);
